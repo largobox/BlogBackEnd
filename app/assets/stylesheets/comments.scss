@@ -1,0 +1,27 @@
+section {
+	margin: 50px;
+	padding: 10px;
+	border-radius: 8px;
+	background-color: rgba(0,0,0, .1);
+}
+
+ul {
+	list-style-type: none;
+	padding: 0px;
+}
+
+li {
+	margin-bottom: 10px;
+}
+
+li:nth-child(1) span {
+	background-color: rgba(0,0,255, .35);
+}
+
+span {
+	display: inline-block;
+	width: 200px;
+	background-color: rgba(0,0,0, .25);
+	padding: 10px;
+	border-radius: 8px;
+}
