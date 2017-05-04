@@ -14,9 +14,6 @@ class CommentsController < ApplicationController
 
 		respond_to do |format|
 		  headers["Access-Control-Allow-Origin"]  = "http://localhost:3000"
-		  headers["Access-Control-Allow-Methods"] = %w{GET POST}.join(",")
-		  headers["Access-Control-Allow-Headers"] = %w{Origin Accept Content-Type X-Requested-With X-CSRF-Token}.join(",")
-		  head(:ok) if request.request_method == "OPTIONS"
 			format.json { render json: @comments }
 		end
 	end
