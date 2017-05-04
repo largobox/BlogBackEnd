@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
 		@comments = Comment.all
 
 		respond_to do |format|
-		  headers["Access-Control-Allow-Origin"]  = "http://localhost:3000"
+		  headers['Access-Control-Allow-Origin']  = 'http://localhost:3000'
 			format.json { render json: @comments }
 		end
 	end
@@ -27,7 +27,7 @@ class CommentsController < ApplicationController
     if @comment.save
       redirect_to root_path
     else
-      render "new"
+      render 'new'
     end
 	end
 
