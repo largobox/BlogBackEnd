@@ -9,5 +9,6 @@ Rails.application.routes.draw do
   resource :comments
 
   get 'user_comments', to: 'comments#user_comments'
+  get 'vk_auth', to: 'application#vk_auth'
 
 end

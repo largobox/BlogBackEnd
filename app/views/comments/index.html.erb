@@ -1,20 +1,27 @@
 <section>
-	
+	<h2>Статус регистрации</h2>
+
+	<% if current_user %>
+		<p><%= current_user.email %></p>
+		<%= link_to 'Выйти',  destroy_user_session_path, method: :delete %>
+	<% else %>
+		<p>Вы не зарегистрированы</p>
+		<%= link_to 'Регистрация', new_user_registration_path %>
+		<%= link_to 'Войти', new_user_session_path %>
+		<%= link_to 'Регистрация через ВК', vk_auth_path %>
+	<% end %>
+
+</section>
+
+<section>
 	<h2>Все комментарии:</h2>
 
-	<ul>
-			<li>
-				<span><b>User ID</b></span>
-				<span><b>Comments BODY</b></span>
-			</li>	
-		<% @comments.each do |c| %>
-			<li>
-				<span><%= c.user_id %></span>
-				<span><%= c.body %></span>
-			</li>
-		<% end %>
+	<ul id = 'user_comments'>
 	</ul>
 
-	<%= link_to 'Добавить', new_comments_path %>
-
+	<form name = 'comment_form'>
+		<input name = 'user_id' type = 'text'>	
+		<input name = 'comment_body' type = 'text'>
+		<button id = 'send_comment_btn'>Добавить</button>	
+	</form>
 </section>

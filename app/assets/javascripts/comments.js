@@ -1,33 +1,69 @@
-// var xhrObject = new XMLHttpRequest()
+var serverAddress = '/'
+// var serverAddress = 'https://desolate-basin-20667.herokuapp.com/'
 
-// xhrObject.open('GET', 'https://desolate-basin-20667.herokuapp.com/user_comments.json', true)
-// xhrObject.send()
+queryGetUserComments()
+handleCommentBtn()
 
-// xhrObject.onreadystatechange = function(){
-// 	if(this.readyState !== 4) return
+function queryGetUserComments(){
+	var xhrObject = new XMLHttpRequest()
 
-// 	if (this.status !== 200) {
-// 		console.log('Error: ' + this.status)
-// 	} else {
-// 		console.log('Ответ: ' + xhrObject.responseText)
-// 	}
-// }
+	xhrObject.open('GET', serverAddress + 'user_comments.json', true)
+	xhrObject.send()
 
-var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
-
-var xhr = new XHR();
-
-// (2) запрос на другой домен :)
-xhr.open('GET', 'http://desolate-basin-20667.herokuapp.com/user_comments.json', true);
-// xhr.open('GET', '/user_comments.json', true);
-
-
-xhr.onload = function() {
-  alert( this.responseText );
+	xhrObject.onload = function(){
+		displayUserComments(xhrObject.responseText)
+	}
+	xhrObject.onerror = function(){
+		console.log('Error: ' + this.status + 'method queryGetUserComments failed')
+	}
 }
 
-xhr.onerror = function() {
-  alert( 'Ошибка ' + this.status );
+function handleCommentBtn(){
+	btn = document.getElementById('send_comment_btn')	
+	btn.onclick = function(e){
+		e.preventDefault()
+		queryAddComment()
+	}
 }
 
-xhr.send();
+function queryAddComment(){
+	var xhrObject = new XMLHttpRequest()
+
+	xhrObject.open('POST', serverAddress + 'comments.json', true)
+	xhrObject.setRequestHeader('X-CSRF-Token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'))
+
+	var formData = new FormData(document.forms.comment_form)
+	xhrObject.send(formData)
+
+	xhrObject.onload = function(){
+		commentsCnt = document.getElementById('user_comments')
+
+		str = [
+			'<li>',
+				'<div>' + formData.get('user_id') + '</div>',
+				'<div>' + formData.get('comment_body') + '</div>',
+			'</li>'
+		].join('')
+
+		commentsCnt.innerHTML += str
+	}
+
+	xhrObject.onerror = function(){
+		console.log('Error: ' + this.status + 'method queryAddComment failed')
+	}
+}
+
+function displayUserComments(inputCommentsString){
+	comments = JSON.parse(inputCommentsString)
+	commentsCnt = document.getElementById('user_comments')
+	res = []
+	for(var i = 0; i < comments.length; i++){
+		res += [
+			'<li>',
+				'<div>' + comments[i].user_id + '</div>',
+				'<div>' + comments[i].body + '</div>',
+			'</li>'
+		].join('')
+	}
+	commentsCnt.innerHTML = res
+}

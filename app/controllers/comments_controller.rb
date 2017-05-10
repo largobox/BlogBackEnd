@@ -14,6 +14,7 @@ class CommentsController < ApplicationController
 
 		respond_to do |format|
 		  headers['Access-Control-Allow-Origin']  = 'http://localhost:3000'
+		  # there address blog front-end
 			format.json { render json: @comments }
 		end
 	end
@@ -23,12 +24,16 @@ class CommentsController < ApplicationController
 	end
 
 	def create
-	  @comment = Comment.new(comment_params)
-    if @comment.save
-      redirect_to root_path
-    else
-      render 'new'
-    end
+		respond_to do |format|
+			format.json do 
+			  @comment = Comment.new(user_id: params[:user_id], body: params[:comment_body])
+		    if @comment.save
+		      redirect_to root_path
+		    else
+		      render 'new'
+		    end
+			end
+		end
 	end
 
 	private
